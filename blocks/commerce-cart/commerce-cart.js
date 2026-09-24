@@ -2,6 +2,7 @@ import { events } from '@dropins/tools/event-bus.js';
 import { render as provider } from '@dropins/storefront-cart/render.js';
 import * as Cart from '@dropins/storefront-cart/api.js';
 import { h } from '@dropins/tools/preact.js';
+import { getPriceFormatter } from '@dropins/tools/lib.js';
 import {
   InLineAlert,
   Icon,
@@ -48,7 +49,15 @@ export default async function decorate(block) {
     'checkout-url': checkoutURL = '',
     'enable-updating-product': enableUpdatingProduct = 'false',
     'undo-remove-item': undo = 'false',
+    'free-shipping-threshold': freeShippingThreshold,
   } = readBlockConfig(block);
+
+  const DEFAULT_FREE_SHIPPING_THRESHOLD = 100;
+  const parsedFreeShippingThreshold = parseFloat(freeShippingThreshold);
+  const freeShippingThresholdValue = !Number.isNaN(parsedFreeShippingThreshold)
+    && parsedFreeShippingThreshold > 0
+    ? parsedFreeShippingThreshold
+    : DEFAULT_FREE_SHIPPING_THRESHOLD;
 
   const placeholders = await fetchPlaceholders();
 
@@ -57,6 +66,30 @@ export default async function decorate(block) {
   // Modal state
   let currentModal = null;
   let currentNotification = null;
+
+  // Free shipping progress bar
+  let $freeShippingMessage;
+  let $freeShippingFill;
+
+  function updateFreeShippingProgress(cartData) {
+    if (!$freeShippingMessage || !$freeShippingFill) return;
+
+    const subtotal = cartData?.subtotal?.excludingTax;
+    const subtotalValue = subtotal?.value ?? 0;
+    const remaining = freeShippingThresholdValue - subtotalValue;
+    const percent = Math.min(100, (subtotalValue / freeShippingThresholdValue) * 100);
+
+    $freeShippingFill.style.width = `${Math.max(0, percent)}%`;
+
+    if (remaining <= 0) {
+      $freeShippingMessage.textContent = placeholders?.Global?.FreeShippingQualifiedMessage
+        || "You've qualified for free shipping!";
+    } else {
+      const formattedAmount = getPriceFormatter({ currency: subtotal?.currency }).format(remaining);
+      const template = placeholders?.Global?.FreeShippingProgressMessage || '{amount} away from free shipping';
+      $freeShippingMessage.textContent = template.replace('{amount}', formattedAmount);
+    }
+  }
 
   // Layout
   const fragment = document.createRange().createContextualFragment(`
@@ -183,6 +216,27 @@ export default async function decorate(block) {
       enableRemoveItem: enableRemoveItem === 'true',
       undo: undo === 'true',
       slots: {
+        Heading: (ctx) => {
+          const el = document.createElement('div');
+          el.innerText = 'Your Bag';
+          ctx.appendChild(el);
+
+          const progress = document.createElement('div');
+          progress.className = 'cart-free-shipping-progress';
+
+          $freeShippingMessage = document.createElement('p');
+          $freeShippingMessage.className = 'cart-free-shipping-progress__message';
+
+          const track = document.createElement('div');
+          track.className = 'cart-free-shipping-progress__track';
+
+          $freeShippingFill = document.createElement('div');
+          $freeShippingFill.className = 'cart-free-shipping-progress__fill';
+          track.appendChild($freeShippingFill);
+
+          progress.append($freeShippingMessage, track);
+          ctx.appendChild(progress);
+        },
         Thumbnail: (ctx) => {
           const { item, defaultImageProps } = ctx;
           const anchorWrapper = document.createElement('a');
@@ -302,6 +356,8 @@ export default async function decorate(block) {
       const isEmpty = !cartData || cartData.totalQuantity < 1;
       $giftOptions.style.display = isEmpty ? 'none' : '';
       $rightColumn.style.display = isEmpty ? 'none' : '';
+
+      updateFreeShippingProgress(cartData);
 
       if (!cartViewEventPublished) {
         cartViewEventPublished = true;

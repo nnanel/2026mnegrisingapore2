@@ -20,6 +20,7 @@ The Commerce Cart block renders a comprehensive shopping cart interface with pro
 | `checkout-url` | string | `''` | URL for checkout button | No | Sets destination for checkout action |
 | `enable-updating-product` | string | `'false'` | Enables product editing via mini-PDP modal | No | Shows/hides edit buttons for configurable products |
 | `undo-remove-item` | string | `'false'` | Enables undo functionality when removing items | No | Shows/hides undo option after item removal |
+| `free-shipping-threshold` | string | `'100'` | Cart subtotal (excluding tax) required to qualify for free shipping. Falls back to `100` when unset or invalid | No | Controls the free shipping progress bar shown in the cart heading |
 
 <!-- ### URL Parameters
 
@@ -33,12 +34,17 @@ No localStorage keys are used by this block. -->
 
 #### Event Listeners
 
-- `events.on('cart/data', callback)` - Listens for cart data updates to refresh the cart display and toggle empty state
+- `events.on('cart/data', callback)` - Listens for cart data updates to refresh the cart display, toggle empty state, and update the free shipping progress bar
 - `events.on('wishlist/alert', callback)` - Listens for wishlist actions to show wishlist-related notifications
 
 #### Event Emitters
 
 - `publishShoppingCartViewEvent()` - Emits shopping cart view event for analytics tracking
+
+### Placeholders
+
+- `Global.FreeShippingProgressMessage` - Message shown while the shopper is below the free shipping threshold. Must contain an `{amount}` token, e.g. `"{amount} away from free shipping"`
+- `Global.FreeShippingQualifiedMessage` - Message shown once the shopper has met the free shipping threshold, e.g. `"You've qualified for free shipping!"`
 
 ## Behavior Patterns
 

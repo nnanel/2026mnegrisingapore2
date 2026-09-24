@@ -1,0 +1,24 @@
+{
+    "chat.tools.terminal.autoApprove": {
+        "/^python3 -c \"\nimport json\nwith open\\('/Users/mnegri/Library/Application Support/Code/User/workspaceStorage/d7d16e2c70ac67576a0d9f4ae1d1896a/GitHub\\.copilot-chat/chat-session-resources/dc97fef1-2d80-4e18-abf1-72c862472758/toolu_01Dc9zbQBMcYDEh7rDqznSQJ__vscode-1790230318055/content\\.json'\\) as f:\n    data = json\\.load\\(f\\)\nprint\\(list\\(data\\.keys\\(\\)\\)\\)\n\"\n$/": {
+            "approve": true,
+            "matchCommandLine": true
+        },
+        "/^python3 -c \"\nimport json\nwith open\\('/Users/mnegri/Library/Application Support/Code/User/workspaceStorage/d7d16e2c70ac67576a0d9f4ae1d1896a/GitHub\\.copilot-chat/chat-session-resources/dc97fef1-2d80-4e18-abf1-72c862472758/toolu_01Dc9zbQBMcYDEh7rDqznSQJ__vscode-1790230318055/content\\.json'\\) as f:\n    data = json\\.load\\(f\\)\nd = data\\['data'\\]\nprint\\(list\\(d\\.keys\\(\\)\\)\\)\nfor k in d:\n    v = d\\[k\\]\n    if isinstance\\(v, list\\):\n        print\\(k, 'list len', len\\(v\\)\\)\n    else:\n        print\\(k, v if not isinstance\\(v, dict\\) else list\\(v\\.keys\\(\\)\\)\\)\n\"\n$/": {
+            "approve": true,
+            "matchCommandLine": true
+        },
+        "/^python3 -c \"\nimport json\nwith open\\('/Users/mnegri/Library/Application Support/Code/User/workspaceStorage/d7d16e2c70ac67576a0d9f4ae1d1896a/GitHub\\.copilot-chat/chat-session-resources/dc97fef1-2d80-4e18-abf1-72c862472758/toolu_01Dc9zbQBMcYDEh7rDqznSQJ__vscode-1790230318055/content\\.json'\\) as f:\n    data = json\\.load\\(f\\)\nd = data\\['data'\\]\nprint\\(json\\.dumps\\(d\\['dropins'\\], indent=2\\)\\[:2000\\]\\)\nprint\\('---config---'\\)\nprint\\(json\\.dumps\\(d\\['config'\\], indent=2\\)\\)\nprint\\('---blocks---'\\)\nprint\\(json\\.dumps\\(d\\['blocks'\\], indent=2\\)\\[:1000\\]\\)\n\"\n$/": {
+            "approve": true,
+            "matchCommandLine": true
+        },
+        "/^python3 -c \"\nimport json\nwith open\\('/Users/mnegri/Library/Application Support/Code/User/workspaceStorage/d7d16e2c70ac67576a0d9f4ae1d1896a/GitHub\\.copilot-chat/chat-session-resources/dc97fef1-2d80-4e18-abf1-72c862472758/toolu_01SCKzSp3msgMMmmgaUgEVXc__vscode-1790230318060/content\\.json'\\) as f:\n    data = json\\.load\\(f\\)\nevents = data\\['data'\\]\\['events'\\]\nfor e in events:\n    print\\(e\\['name'\\]\\)\n\"\n$/": {
+            "approve": true,
+            "matchCommandLine": true
+        },
+        "/^python3 -c \"\nimport json\nwith open\\('/Users/mnegri/Library/Application Support/Code/User/workspaceStorage/d7d16e2c70ac67576a0d9f4ae1d1896a/GitHub\\.copilot-chat/chat-session-resources/dc97fef1-2d80-4e18-abf1-72c862472758/toolu_01SCKzSp3msgMMmmgaUgEVXc__vscode-1790230318060/content\\.json'\\) as f:\n    data = json\\.load\\(f\\)\nevents = data\\['data'\\]\\['events'\\]\nfor e in events:\n    if e\\['name'\\] == 'cart/data':\n        print\\(json\\.dumps\\(e, indent=2\\)\\)\n\"\n$/": {
+            "approve": true,
+            "matchCommandLine": true
+        }
+    }
+}
